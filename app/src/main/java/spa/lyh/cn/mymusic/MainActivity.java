@@ -10,22 +10,34 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.EmptySignature;
+
 import spa.lyh.cn.mymusic.base.BaseActivity;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener {
     CoordinatorLayout c;
     AppBarLayout appBarLayout;
 
     TextView head,down;
-    String content;
 
     View statusBar;
 
     RelativeLayout headArea;
+
+    int length;
+
+    ImageView img;
+
+    private static final int UNSET = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +51,30 @@ public class MainActivity extends BaseActivity {
         c = findViewById(R.id.main_content);
         head = findViewById(R.id.head);
         down = findViewById(R.id.down);
-        content = down.getText().toString();
-        //head.setText(content);
+        head.setVisibility(View.INVISIBLE);
+
+        img = findViewById(R.id.img);
+        RequestOptions options = new RequestOptions()
+                .sizeMultiplier(1f)
+                .useUnlimitedSourceGeneratorsPool(false)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .priority(Priority.NORMAL)
+                .error(null)
+                .placeholder(null)
+                .skipMemoryCache(false)
+                .override(UNSET,UNSET)
+                .signature(EmptySignature.obtain())
+                .fallback(null)
+                .theme(null)
+                //.transform()
+                .onlyRetrieveFromCache(false);
+        //.format(DecodeFormat.PREFER_ARGB_8888);
+
+        Glide.with(this)
+                .asDrawable()
+                .apply(options)
+                .load("http://gss0.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/241f95cad1c8a78603c996956009c93d71cf504e.jpg")
+                .into(img);
 
 
         statusBar = findViewById(R.id.status_bar);
@@ -50,41 +84,28 @@ public class MainActivity extends BaseActivity {
 
         headArea = findViewById(R.id.headArea);
 
-        //headArea.setMinimumHeight(dip2px(this,50) + getStatusBarHeight(this));
+        length = dip2px(this,90) + getStatusBarHeight(this);
+        headArea.setMinimumHeight(length);
 
         appBarLayout = findViewById(R.id.appbar);
 
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
-                float offset = -i;
-                float height = appBarLayout.getHeight()-dip2px(MainActivity.this,100);
-                float b = offset / height;
-                Log.e("liyuhao",b+"");
 
-                if (b > 0.95){
-                    new Handler(getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            head.setText(content);
-                            down.setText("");
-                        }
-                    });
+    }
 
-                }else {
-                    new Handler(getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            head.setText("");
-                            down.setText(content);
-                        }
-                    });
-                }
-            }
-        });
-
-
-
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
+        //之所以要这么写是为了避免这个弱引用被回收
+        float offset = -i;
+        float height = appBarLayout.getHeight()-length;
+        float b = offset / height;
+        //applayout内部尽量都为固定高度，否则容易出现像素抖动问题
+        if (b > 0.95){
+            head.setVisibility(View.VISIBLE);
+            down.setVisibility(View.INVISIBLE);
+        }else {
+            head.setVisibility(View.INVISIBLE);
+            down.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -93,4 +114,15 @@ public class MainActivity extends BaseActivity {
         return (int) (dpValue * scale);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        appBarLayout.addOnOffsetChangedListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        appBarLayout.removeOnOffsetChangedListener(this);
+    }
 }
