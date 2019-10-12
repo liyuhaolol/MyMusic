@@ -10,21 +10,21 @@ import android.os.Message;
 import android.os.PowerManager;
 import android.util.Log;
 
-import com.imooc.lib_audio.app.AudioHelper;
-import com.imooc.lib_audio.mediaplayer.events.AudioCompleteEvent;
-import com.imooc.lib_audio.mediaplayer.events.AudioErrorEvent;
-import com.imooc.lib_audio.mediaplayer.events.AudioLoadEvent;
-import com.imooc.lib_audio.mediaplayer.events.AudioPauseEvent;
-import com.imooc.lib_audio.mediaplayer.events.AudioProgressEvent;
-import com.imooc.lib_audio.mediaplayer.events.AudioReleaseEvent;
-import com.imooc.lib_audio.mediaplayer.events.AudioStartEvent;
-import com.imooc.lib_audio.mediaplayer.model.AudioBean;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 
 import spa.lyh.cn.lib_audio.app.AudioHelper;
+
+import spa.lyh.cn.lib_audio.mediaplayer.events.AudioCompleteEvent;
+import spa.lyh.cn.lib_audio.mediaplayer.events.AudioErrorEvent;
+import spa.lyh.cn.lib_audio.mediaplayer.events.AudioLoadEvent;
+import spa.lyh.cn.lib_audio.mediaplayer.events.AudioPauseEvent;
+import spa.lyh.cn.lib_audio.mediaplayer.events.AudioProgressEvent;
+import spa.lyh.cn.lib_audio.mediaplayer.events.AudioReleaseEvent;
+import spa.lyh.cn.lib_audio.mediaplayer.events.AudioStartEvent;
+import spa.lyh.cn.lib_audio.mediaplayer.model.AudioBean;
 
 /**
  * 播放器事件源
