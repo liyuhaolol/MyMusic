@@ -69,9 +69,10 @@ public class AudioPlayer
   }
 
   @Override public void audioFocusGrant() {
-    //重新获得焦点
+    //重新获得焦点，设置音量，左声道，右声道
     setVolumn(1.0f, 1.0f);
     if (isPausedByFocusLossTransient) {
+      //由于系统暂停音乐播放
       resume();
     }
     isPausedByFocusLossTransient = false;
@@ -94,7 +95,7 @@ public class AudioPlayer
   }
 
   @Override public void onBufferingUpdate(MediaPlayer mp, int percent) {
-
+      //缓存进度的处理
   }
 
   @Override public void onCompletion(MediaPlayer mp) {
@@ -105,6 +106,7 @@ public class AudioPlayer
   @Override public boolean onError(MediaPlayer mp, int what, int extra) {
     //发送当次播放实败事件,逻辑类型事件
     EventBus.getDefault().post(new AudioErrorEvent());
+    //return false的话，会继续回调onCompletion方法，return true，则表示自己处理，不会回调onCompletion
     return false;
   }
 
