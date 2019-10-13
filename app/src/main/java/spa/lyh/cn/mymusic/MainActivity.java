@@ -2,6 +2,7 @@ package spa.lyh.cn.mymusic;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
@@ -17,10 +18,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.request.BaseRequestOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.signature.EmptySignature;
 
+import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.glide.transformations.ColorFilterTransformation;
 import spa.lyh.cn.mymusic.base.BaseActivity;
 
 public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener {
@@ -54,24 +60,13 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         head.setVisibility(View.INVISIBLE);
 
         img = findViewById(R.id.img);
+        //RequestOptions.(new BlurTransformation(500),new CenterCrop()).dontAnimate().centerCrop();
         RequestOptions options = new RequestOptions()
-                .sizeMultiplier(1f)
-                .useUnlimitedSourceGeneratorsPool(false)
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .priority(Priority.NORMAL)
-                .error(null)
-                .placeholder(null)
-                .skipMemoryCache(false)
-                .override(UNSET,UNSET)
-                .signature(EmptySignature.obtain())
-                .fallback(null)
-                .theme(null)
-                //.transform()
-                .onlyRetrieveFromCache(false);
-        //.format(DecodeFormat.PREFER_ARGB_8888);
+                .dontAnimate()
+                .transform(new BlurTransformation(500),new CenterCrop(),new ColorFilterTransformation(0x29000000));
 
         Glide.with(this)
-                .asDrawable()
+                .asBitmap()
                 .apply(options)
                 .load("http://gss0.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/241f95cad1c8a78603c996956009c93d71cf504e.jpg")
                 .into(img);
