@@ -43,14 +43,11 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
 
     ImageView img;
 
-    private static final int UNSET = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTranslucent();
-        //隐藏掉导航栏
-        setSystemUiVisibility(getWindow().getDecorView(),View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
 
         c = findViewById(R.id.main_content);
         head = findViewById(R.id.head);
