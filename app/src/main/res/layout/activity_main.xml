@@ -20,7 +20,7 @@
                 android:id="@+id/headArea"
                 android:layout_width="match_parent"
                 android:layout_height="360dp"
-                app:layout_scrollFlags="scroll|enterAlways|exitUntilCollapsed">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
                 <ImageView
                     android:id="@+id/img"
                     android:layout_width="match_parent"

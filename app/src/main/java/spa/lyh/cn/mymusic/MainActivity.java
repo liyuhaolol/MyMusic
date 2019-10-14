@@ -50,9 +50,7 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         setContentView(R.layout.activity_main);
         setTranslucent();
         //隐藏掉导航栏
-        setSystemUiVisibility(getWindow().getDecorView(),View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        setSystemUiVisibility(getWindow().getDecorView(),View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
 
         c = findViewById(R.id.main_content);
         head = findViewById(R.id.head);
@@ -63,7 +61,9 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         //RequestOptions.(new BlurTransformation(500),new CenterCrop()).dontAnimate().centerCrop();
         RequestOptions options = new RequestOptions()
                 .dontAnimate()
-                .transform(new BlurTransformation(500),new CenterCrop(),new ColorFilterTransformation(0x29000000));
+                .transform(new BlurTransformation(20,20),new CenterCrop(),new ColorFilterTransformation(0x29000000));
+
+        ////
 
         Glide.with(this)
                 .asBitmap()
